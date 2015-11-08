@@ -62,22 +62,32 @@ function spawnFood() {
 
 // move
 
-// draws / redraws snake for each frame
+// moves and draws snake
 function drawSnake() {
+  // debugger;
   ctx.beginPath();
   ctx.rect(0, 0, canvas.height / 2, canvas.width / 2);
-
-  var currentX = snake.x,
-    currentY = snake.y;
-
-  snake.breakpoints[0][1]--; // snake has moved, so make the tail shorter
-  // iterate over each snake segment, drawing it out
-  snake.breakpoints[snake.breakpoints.length - 1][1]++;
-  // alert(snake.breakpoints[snake.breakpoints.length - 1])
 
   if (snake.breakpoints[0][1] === 0) {
     snake.breakpoints.shift();
   };
+
+  var tailDirection = snake.breakpoints[0][0];
+  if (tailDirection === 'up')
+    snake.y -= gridSize;
+  else if (tailDirection === 'down')
+    snake.y += gridSize;
+  else if (tailDirection === 'left')
+    snake.x -= gridSize;
+  else if (tailDirection === 'right')
+    snake.x += gridSize;
+
+  var currentX = snake.x,
+    currentY = snake.y;
+
+  snake.breakpoints[0][1]--; // shorten tail to simulate movement
+  snake.breakpoints[snake.breakpoints.length - 1][1]++; // lengthen head to simulate movement
+
 
 
   for (var i = 0; i < snake.breakpoints.length ; i++) {
@@ -107,18 +117,7 @@ function drawSnake() {
 
 
 
-  var tailDirection = snake.breakpoints[0][0];
-  if (tailDirection === 'up')
-    snake.y -= gridSize;
-  else if (tailDirection === 'down')
-    snake.y += gridSize;
-  else if (tailDirection === 'left')
-    snake.x -= gridSize;
-  else if (tailDirection === 'right')
-    snake.x += gridSize;
-
-  // debugger;
-
+  // lose if snake movement exceeds game border
   if (currentX < -gridSize || currentX > canvas.width - gridSize
     || currentY === -gridSize || currentY == canvas.height)
     lose = true;
