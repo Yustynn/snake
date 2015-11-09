@@ -13,7 +13,6 @@
 
 
 // MAJOR TODOS
-  // fix y-pos bug
   // make snake die when it overlaps itself
 
 // MINOR TODOS
@@ -24,10 +23,9 @@
  * Coordinates object
  */
 
-// if non y provided, y assumed to = x
 function Coordinates(x, y) {
   this.x = x;
-  this.y = y || x;
+  this.y = y;
 }
 
  /**
@@ -138,7 +136,7 @@ Game.prototype.randomCoordinates = function() {
 // constructs snake in the middle of the screen
 function Snake(direction, length, color) {
   // TODO: Figure out how not to reference the 'game' var
-  this.coordinatesQueue = [ new Coordinates(game.boardLength / 2) ]
+  this.coordinatesQueue = [ new Coordinates(game.boardLength / 2, game.boardLength / 2) ];
   this.color = color;
   this.direction = direction;
   this.moved = false;
@@ -205,10 +203,14 @@ Snake.prototype.lengthenHead = function() {
     x = head.x,
     y = head.y;
 
-    if (this.direction === 'up')
-      this.coordinatesQueue.push(
-        new Coordinates(x, y - 1)
-      );
+    if (this.direction === 'up') {
+      debugger;
+      var c = new Coordinates(x, y - 1);
+      this.coordinatesQueue.push(c);
+    }
+      // this.coordinatesQueue.push(
+      //   new Coordinates(x, y - 1)
+      // );
     else if (this.direction === 'down')
       this.coordinatesQueue.push(
         new Coordinates(x, y + 1)
