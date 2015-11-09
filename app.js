@@ -12,12 +12,12 @@
   // use requestAnimationFrame
 
 
-// MAJOR TODOS
-  // make snake die when it overlaps itself
 
 // MINOR TODOS
   // fix die at wall offset bug
   // use requestAnimationFrame
+  // refactor score code. It's all over the place.
+  // make program more functional. I don't like the external references.
 
 /**
  * Coordinates object
@@ -180,8 +180,9 @@ Snake.prototype.contains = function(coordinates) {
   });
 };
 
+// same as contains() but excludes the head when checking
 Snake.prototype.bodyContains = function(coordinates) {
-  var bodyCoordinatesQueue = this.coordinatesQueue.slice(1);
+  var bodyCoordinatesQueue = this.coordinatesQueue.slice(0, this.coordinatesQueue.length - 1);
   return bodyCoordinatesQueue.some(function(snakeCoordinates) {
     return snakeCoordinates.x === coordinates.x && snakeCoordinates.y === coordinates.y;
   });
@@ -250,7 +251,8 @@ Snake.prototype.isDead = function() {
   var head = this.getHead();
   return (
     head.x === game.boardLength || head.x < 0 ||
-    head.y === game.boardLength || head.y < 0
+    head.y === game.boardLength || head.y < 0 ||
+    this.bodyContains(head)
   )
 }
 
